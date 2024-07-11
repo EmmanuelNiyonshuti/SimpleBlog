@@ -2,12 +2,16 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
 from flaskblog.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    username = StringField('Username', validators=[
+                                    DataRequired(),
+                                    Length(min=2, max=20, message="please provide a valid username"),
+                                    Regexp("^[A-Za-z][A-Za-z0-9_]*$", 0,
+                                    "username must comprise letters, numbers, dots or underscores")])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
@@ -21,7 +25,7 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError("The email is taken. Please choose a different username!")
+            raise ValidationError("The email is taken. Please choose a different email!")
 
 
 class LoginForm(FlaskForm):
@@ -32,21 +36,16 @@ class LoginForm(FlaskForm):
 
 
 class UpdateForm(FlaskForm):
-    username = StringField('Username',
-                             validators=[DataRequired(), Length(min=2, max=20)])
+    username = StringField('Username', validators=[
+                                    DataRequired(),
+                                    Length(min=2, max=20, message="please provide a valid username"),
+                                    Regexp("^[A-Za-z][A-Za-z0-9_]*$", 0,
+                                    "username must comprise letters, numbers, dots or underscores")])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     picture = FileField("Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
 
     submit = SubmitField('Update')
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError("The username is taken. Please choose a different username!")
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError("The email is taken. Please choose a different username!")
 
 class RequestResetForm(FlaskForm):
     email = StringField("email",
@@ -55,7 +54,7 @@ class RequestResetForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
-        if user is None:
+        if not user:
             return ValidationError("There is no account with that email. You must register first.")
 
 class ResetPasswordForm(FlaskForm):
