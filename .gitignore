@@ -1,4 +1,6 @@
 ### Flask ###
+.gitignore
+instance/
 instance/*
 !instance/.gitignore
 .webassets-cache
