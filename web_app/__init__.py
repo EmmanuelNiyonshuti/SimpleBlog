@@ -4,9 +4,8 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from flaskblog.config import Config
+from web_app.config import Config
 from flask_admin import Admin
-# from flask_admin.contrib.sqla import ModelView
 
 
 db = SQLAlchemy()
@@ -30,10 +29,10 @@ def create_app(config_class=Config):
     admin.init_app(app)
     migrate.init_app(app, db)
 
-    from flaskblog.users.routes import users
-    from flaskblog.posts.routes import posts
-    from flaskblog.main.routes import main
-    from flaskblog.errors.handlers import errors
+    from web_app.users.routes import users
+    from web_app.posts.routes import posts
+    from web_app.main.routes import main
+    from web_app.errors.handlers import errors
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)

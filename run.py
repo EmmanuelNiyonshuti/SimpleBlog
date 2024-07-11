@@ -1,9 +1,9 @@
-from flaskblog import create_app, db
-from flaskblog.models import User, Post
-from flaskblog import admin
+from web_app import create_app, db
+from web_app.models import User, Post
+from web_app import admin
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flaskblog.models import AdminModelView
+from web_app.models import AdminModelView
 
 app = create_app()
 
