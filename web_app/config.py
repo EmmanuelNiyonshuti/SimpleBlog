@@ -9,7 +9,8 @@ db_name = os.getenv("BLOG_POSTGRES_DB")
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{db_user}:{db_pwd}@{db_host}/{db_name}"
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{db_user}:{db_pwd}@{db_host}/{db_name}"
+
     MAIL_SERVER = "smtp.googlemail.com"
     MAIL_PORT = 587
     MAIL_USE_TLS = True
