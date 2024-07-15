@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleBlog</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 56px;
+    }
+    .cover-image {
+      background: url('your-cover-image-url') no-repeat center center;
+      background-size: cover;
+      height: 400px;
+    }
+    .cover-text {
+      color: white;
+      text-shadow: 2px 2px 4px #000000;
+    }
+    .feature-icon {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="https://simpleblog-l09c.onrender.com/">SimpleBlog</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary btn-md" href="https://simpleblog-l09c.onrender.com/home">Visit the App</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Cover Image Section -->
+  <header class="cover-image d-flex align-items-center justify-content-center">
+    <div class="text-center">
+      <h1 class="display-3">SimpleBlog</h1>
+      <p class="lead">A place to share your thoughts and read exciting blogs on various topics.</p>
+      <a class="btn btn-primary btn-lg" href="https://simpleblog-l09c.onrender.com/home">Visit the App</a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Features</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="text-center">
+            <div class="feature-icon mb-2">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            <h4>User Account Management</h4>
+            <p>Create an account with your username and email, reset your password, and update your profile.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center">
+            <div class="feature-icon mb-2">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <h4>Manage Posts</h4>
+            <p>Create, view, update, and delete your blog posts with ease.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center">
+            <div class="feature-icon mb-2">
+              <i class="bi bi-chat-dots"></i>
+            </div>
+            <h4>Interactive Community</h4>
+            <p>Engage with other users by reading and commenting on their posts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">About</h2>
+      <p class="lead">SimpleBlog was created to provide a platform for sharing ideas and learning from others. The inspiration came from my passion for web development and a desire to build something simple yet meaningful using Flask framework.</p>
+      <p class="lead">This project is part of my portfolio for ALX SE</p>
+      <div class="text-center">
+        <a href="https://www.linkedin.com/in/niyonshuti-emmanuel-82877b285/" class="btn btn-outline-primary m-1">LinkedIn</a>
+        <a href="https://github.com/" class="btn btn-outline-secondary m-1">GitHub</a>
+        <a href="https://x.com/NIYONSH77028058" class="btn btn-outline-info m-1">Twitter</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
