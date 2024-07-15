@@ -12,4 +12,4 @@ if __name__ == "__main__":
         db.create_all()
         admin.add_view(AdminModelView(User, db.session))
         admin.add_view(AdminModelView(Post, db.session))
-    app.run(debug=True)
+    app.run()
