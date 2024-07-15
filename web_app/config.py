@@ -2,10 +2,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-db_user = os.getenv("BLOG_POSTGRES_USER")
-db_pwd = os.getenv("BLOG_POSTGRES_PWD")
-db_host = os.getenv("BLOG_POSTGRES_HOST")
-db_name = os.getenv("BLOG_POSTGRES_DB")
+db_user = os.getenv("BLOG_POSTGRESQL_USER")
+db_pwd = os.getenv("BLOG_POSTGRESQL_PWD")
+db_host = os.getenv("BLOG_POSTGRESQL_HOST")
+db_name = os.getenv("BLOG_POSTGRESQL_DB")
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
