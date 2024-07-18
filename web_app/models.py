@@ -5,7 +5,6 @@ from web_app import db, login_manager
 from flask_login import current_user
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
-# from flask_admin import AdminIndexView, expose
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -17,28 +16,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    # user_role = db.Column(db.String(30), nullable=False, default="user")
     posts = db.relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")
-
-
-class AdminModelView(ModelView):
-    def is_accessible(self):
-        """
-        determines if the current user can access the admin view.
-        returns True if the user is authenticated.
-        """
-        return current_user.is_authenticated and current_user.username == "emmanuel"
-
-    def inaccessible_callback(self, name, **kwargs):
-        """
-        redirects user to the login page if it is not authenticated.
-        """
-        return redirect(url_for("users.login", next=request.url))
-
-# class MyAdminIndexView(AdminIndexView):
-#     @expose("/")
-#     def index():
-#         return self.render("admin/index.html")
 
     def get_reset_token(self):
         s = Serializer(current_app.config["SECRET_KEY"])
@@ -65,3 +43,19 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+class AdminModelView(ModelView):
+    def is_accessible(self):
+        """
+        determines if the current user can access the admin view.
+        returns True if the user is authenticated.
+        """
+        return current_user.is_authenticated and current_user.username == "emmanuel"
+
+    def inaccessible_callback(self, name, **kwargs):
+        """
+        redirects user to the login page if it is not authenticated.
+        """
+        return redirect(url_for("users.login", next=request.url))
+
