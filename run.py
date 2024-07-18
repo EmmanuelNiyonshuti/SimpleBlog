@@ -1,6 +1,6 @@
 from web_app import create_app
 from web_app.models import User, Post
-from web_app import admin
+from web_app import admin, db
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from web_app.models import AdminModelView
