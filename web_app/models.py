@@ -17,28 +17,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    # user_role = db.Column(db.String(30), nullable=False, default="user")
     posts = db.relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")
 
+    comments = db.relationship("Comment", back_populates="author")
 
-class AdminModelView(ModelView):
-    def is_accessible(self):
-        """
-        determines if the current user can access the admin view.
-        returns True if the user is authenticated.
-        """
-        return current_user.is_authenticated and current_user.username == "emmanuel"
-
-    def inaccessible_callback(self, name, **kwargs):
-        """
-        redirects user to the login page if it is not authenticated.
-        """
-        return redirect(url_for("users.login", next=request.url))
-
-# class MyAdminIndexView(AdminIndexView):
-#     @expose("/")
-#     def index():
-#         return self.render("admin/index.html")
 
     def get_reset_token(self):
         s = Serializer(current_app.config["SECRET_KEY"])
@@ -56,12 +38,52 @@ class AdminModelView(ModelView):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
+
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship("Comment", back_populates="post", lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    author = db.relationship("User", back_populates="comments")
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    post = db.relationship("Post", back_populates="comments")
+
+    def __repr__(self):
+        return f"Comment('{self.author}', '{self.content}', '{self.post}')"
+
+
+
+
+
+
+
+
+class AdminModelView(ModelView):
+    def is_accessible(self):
+        """
+        determines if the current user can access the admin view.
+        returns True if the user is authenticated.
+        """
+        return current_user.is_authenticated and current_user.username == "emmanuel"
+
+    def inaccessible_callback(self, name, **kwargs):
+        """
+        redirects user to the login page if it is not authenticated.
+        """
+        return redirect(url_for("users.login", next=request.url))
+
+
