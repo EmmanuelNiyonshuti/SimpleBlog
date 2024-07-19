@@ -19,4 +19,5 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.getenv("EMAIL_USER")
     MAIL_PASSWORD = os.getenv("EMAIL_PWD")
+    MAIL_DEFAULT_SENDER = ('simpleblog', 'no-reply@simpleblog.com')
     FLASK_ADMIN_SWATCH = "sandstone"
