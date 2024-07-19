@@ -50,8 +50,9 @@
                         {% endif %}
                 </fieldset>
                 <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
+                    {{ form.submit(class="btn btn-primary btn-sm") }}
+                    <a class="btn btn-primary btn-sm ml-2" href="{{url_for('users.account_delete')}}">delete</a>
+                </div>
             </form>
-        </div>
     </div>
 {% endblock content %}
