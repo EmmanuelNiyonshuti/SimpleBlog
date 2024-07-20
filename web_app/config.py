@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+#local dvpt
 # db_user = os.getenv("BLOG_MYSQL_USER")
 # db_pwd = os.getenv("BLOG_MYSQL_PWD")
 # db_host = os.getenv("BLOG_MYSQL_HOST")
