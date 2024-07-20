@@ -35,7 +35,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
-            flash('Login Unseccessful. Please check email and password', 'danger')
+            flash("Login Unseccessful. Please check email and password", "danger")
     return render_template("login.html", title="login", form=form)
 
 
@@ -47,7 +47,6 @@ def logout():
 @users.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-
     form = UpdateForm()
     if request.method == "POST":
         if form.validate_on_submit():
@@ -62,10 +61,21 @@ def account():
     elif request.method == "GET":
         form.username.data= current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pcs/' + current_user.image_file)
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("account.html", title="account",
                                                 image_file=image_file, form=form)
 
+
+
+@users.route("/account/delete", methods=["GET", "POST"])
+@login_required
+def account_delete():
+    user_id = current_user.id
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash("You have successfully deleted your Account", "success")
+    return redirect(url_for("main.home"))
 
 @users.route("/user/<string:username>")
 def user_posts(username):

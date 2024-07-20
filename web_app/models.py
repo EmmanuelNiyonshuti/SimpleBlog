@@ -18,6 +18,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")
 
+    comments = db.relationship("Comment", back_populates="author", cascade="all, delete-orphan")
+
+
     def get_reset_token(self):
         s = Serializer(current_app.config["SECRET_KEY"])
         return s.dumps({"user_id": self.id})
@@ -34,15 +37,34 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
+
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship("Comment", back_populates="post", lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(100), nullable=False)
+    date_commented = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    author = db.relationship("User", back_populates="comments")
+    
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    post = db.relationship("Post", back_populates="comments")
+
+    def __repr__(self):
+        return f"Comment('{self.author}', '{self.content}', '{self.post}')"
 
 
 class AdminModelView(ModelView):

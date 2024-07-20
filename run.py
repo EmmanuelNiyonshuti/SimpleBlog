@@ -11,4 +11,4 @@ if __name__ == "__main__":
     with app.app_context():
         admin.add_view(AdminModelView(User, db.session))
         admin.add_view(AdminModelView(Post, db.session))
-    app.run()
+    app.run(debug=True)
