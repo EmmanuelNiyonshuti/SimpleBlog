@@ -16,8 +16,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")
+    is_verified = db.Column(db.Boolean, default=False)
 
+    posts = db.relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")
     comments = db.relationship("Comment", back_populates="author", cascade="all, delete-orphan")
 
 
@@ -33,6 +34,7 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
+
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"

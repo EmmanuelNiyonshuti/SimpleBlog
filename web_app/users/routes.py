@@ -1,11 +1,11 @@
-from flask import render_template, url_for, flash, redirect, request, abort, Blueprint
+from flask import render_template, url_for, flash, redirect, request, abort, Blueprint, session
 from web_app import db, bcrypt
 from web_app.users.forms import (RegistrationForm, LoginForm, UpdateForm,
 RequestResetForm, ResetPasswordForm)
 import email_validator
 from web_app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-from web_app.users.utils import save_picture, send_reset_email
+from web_app.users.utils import save_picture, send_reset_email, send_confirmation_email, verify_email_token 
 
 users = Blueprint("users", __name__)
 
@@ -16,12 +16,40 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_pwd)
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Your Account has been created successfully! You are now able to login', 'success')
-        return redirect(url_for("users.login"))
+        user_data ={
+            "username": form.username.data,
+            "email": form.email.data,
+            "password": hashed_pwd
+        }
+        session["user_data"] = user_data
+        send_confirmation_email(user_data)
+        flash("a confirmation link has been sent to your email address", "success")
+        return redirect(url_for("users.thank_you"))
     return render_template('register.html', title="Register", form=form)
+
+
+@users.route("/thank_you", methods=['POST', 'GET'])
+def thank_you():
+    return render_template("blank.html")
+
+@users.route("/confirm_email/<token>", methods=['POST', 'GET'])
+def confirm_email(token):
+    email = verify_email_token(token)
+    if not email:
+        flash("That is an invalid or expired token", "warning")
+    user = session.get("user_data")
+    if user and user["email"] == email:
+        new_user = User(username=user["username"],
+                        email=user["email"],
+                        password=user["password"],
+                        is_verified=True)
+        db.session.add(new_user)
+        db.session.commit()
+        session.pop("user_data", None)
+        flash('Your account has been verified, you can now login', 'success')
+        return redirect(url_for("users.login"))
+    else:
+        return redirect(url_for("users.register"))
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
@@ -30,10 +58,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+        if user:
+            if user.is_verified and bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash("Login Unseccessful. Please check email and password", "danger")
     return render_template("login.html", title="login", form=form)
@@ -65,8 +94,6 @@ def account():
     return render_template("account.html", title="account",
                                                 image_file=image_file, form=form)
 
-
-
 @users.route("/account/delete", methods=["GET", "POST"])
 @login_required
 def account_delete():
@@ -96,7 +123,7 @@ def reset_request():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
         flash("An email has been sent with instructions to reset your password", "info")
-        return redirect(url_for("users.login"))
+        return redirect(url_for("users.thank_you"))
     return render_template("reset_request.html", title="Reset Password", form=form)
 
 @users.route("/reset_password/<token>", methods=["GET", "POST"])
