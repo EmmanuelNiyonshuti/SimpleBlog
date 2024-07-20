@@ -1,3 +1,7 @@
+"""
+This module defines routes for post-related functionalities, including creating,
+viewing, updating, deleting posts, and adding comments.
+"""
 from flask import (render_template, url_for, flash,
                     redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
@@ -11,6 +15,15 @@ posts= Blueprint("posts", __name__)
 @posts.route("/post/new", methods=["GET", "POST"])
 @login_required
 def new_post():
+    """
+    Create a new post.
+
+    This route allows authenticated users to create a new post. The post is created
+    with the title and content provided by the user in the form.
+
+    Returns:
+        template: Renders the 'create_post.html' template with the form.
+    """
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
@@ -23,6 +36,17 @@ def new_post():
 
 @posts.route("/post/<int:post_id>", strict_slashes=False)
 def post(post_id):
+    """
+    View a specific post.
+
+    This route allows users to view a specific post by its ID.
+
+    Args:
+        post_id (int): The ID of the post to view.
+
+    Returns:
+        template: Renders the 'post.html' template with the post data.
+    """
     post = Post.query.get_or_404(post_id)
     return render_template("post.html", title=post.title, post=post)
 
@@ -31,6 +55,18 @@ def post(post_id):
 @posts.route("/post/<int:post_id>/update", methods=["GET", "POST"])
 @login_required
 def update_post(post_id):
+    """
+    Update an existing post.
+
+    This route allows authenticated users to update their own posts. The post is updated
+    with the new title and content provided by the user in the form.
+
+    Args:
+        post_id (int): The ID of the post to update.
+
+    Returns:
+        template: Renders the 'create_post.html' template with the form.
+    """
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
@@ -49,6 +85,17 @@ def update_post(post_id):
 @posts.route("/post/<int:post_id>/delete", methods=["POST"])
 @login_required
 def delete_post(post_id):
+    """
+    Delete an existing post.
+
+    This route allows authenticated users to delete their own posts.
+
+    Args:
+        post_id (int): The ID of the post to delete.
+
+    Returns:
+        redirect: Redirects to the home page after deletion.
+    """
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(404)
@@ -60,6 +107,17 @@ def delete_post(post_id):
 @posts.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
 @login_required
 def add_comment(post_id):
+    """
+    Add a comment to a post.
+
+    This route allows authenticated users to add a comment to a specific post.
+
+    Args:
+        post_id (int): The ID of the post to comment on.
+
+    Returns:
+        template: Renders the 'add_comment.html' template with the form.
+    """
     post = Post.query.get_or_404(post_id)
     form = AddComment()
     if request.method == "POST":
@@ -74,6 +132,18 @@ def add_comment(post_id):
 @posts.route("/post/<int:post_id>/comment/<int:comment_id>", methods=["GET", "POST"])
 @login_required
 def delete_comment(post_id=None, comment_id=None):
+    """
+    Delete a comment from a post.
+
+    This route allows authenticated users to delete their own comments from a specific post.
+
+    Args:
+        post_id (int): The ID of the post containing the comment.
+        comment_id (int): The ID of the comment to delete.
+
+    Returns:
+        redirect: Redirects to the post page after deletion.
+    """
     post = Post.query.get_or_404(post_id)
     comment = Comment.query.get_or_404(comment_id)
     if comment.author != current_user:

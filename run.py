@@ -1,14 +1,14 @@
+"""
+This script initializes and runs the Flask application.
+
+It sets up the application context and starts the server.
+"""
 from web_app import create_app
 from web_app.models import User, Post
-from web_app import admin, db
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-from web_app.models import AdminModelView
+from web_app import db
 
 app = create_app()
 
 if __name__ == "__main__":
     with app.app_context():
-        admin.add_view(AdminModelView(User, db.session))
-        admin.add_view(AdminModelView(Post, db.session))
-    app.run(debug=True)
+        app.run()
