@@ -35,6 +35,7 @@ db_name = os.getenv("BLOG_POSTGRESQL_DB")
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
+    """SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{db_user}:{db_pwd}@{db_host}/{db_name}" """
     SQLALCHEMY_DATABASE_URI = f"postgresql://{db_user}:{db_pwd}@{db_host}/{db_name}"
     MAIL_SERVER = "smtp.googlemail.com"
     MAIL_PORT = 587
@@ -44,3 +45,4 @@ class Config:
     MAIL_DEFAULT_SENDER = ('simpleblog', 'no-reply@simpleblog.com')
     FLASK_ADMIN_SWATCH = "sandstone"
     SECURITY_PASSWORD_SALT=os.getenv("SECURITY_PASSWORD_SALT")
+    JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY")

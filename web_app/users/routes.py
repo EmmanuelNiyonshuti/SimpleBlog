@@ -9,7 +9,8 @@ RequestResetForm, ResetPasswordForm)
 import email_validator
 from web_app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-from web_app.users.utils import save_picture, send_reset_email, send_confirmation_email, verify_email_token 
+from web_app.users.utils import (save_picture, send_reset_email,
+                                send_confirmation_email, verify_email_token)
 
 users = Blueprint("users", __name__)
 
@@ -96,7 +97,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            if user.is_verified and bcrypt.check_password_hash(user.password, form.password.data):
+            if user.is_verified and user.verify_pwd(form.password.data):
                 login_user(user, form.remember.data)
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('main.home'))
