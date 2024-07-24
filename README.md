@@ -1,5 +1,6 @@
-# SimpleBlog
+# Simple Blog
 
+A Flask-based blogging platform that makes it easy to create and share your thoughts. With features like user authentication, post management, and a commenting system.
 
 ## Table of content
 
@@ -158,16 +159,18 @@ Description of each endpoint:
 ## Built With
 
 ### Tools
-![alt text](blog_stack.png)
+![Blog Stack](https://i.postimg.cc/T1QwnRDD/blog-stack.png)
 
 
 ### Architecture
 
+[![architecture.png](https://i.postimg.cc/htnX65Sv/architecture.png)](https://postimg.cc/Vd7sb40P)
 
 
 ## Getting Started
 
 To see the application in action, visit https://simpleblog-l09c.onrender.com/.
+
 #### Local Installation
 
 ##### Clone the repository:
@@ -217,19 +220,20 @@ On Windows:
 
 `flask run`
 
-
 Note:
 Make sure you have Python 3.x and pip installed on your system before starting the installation process.
 The demo uses a database hosted on Render. For local development, you'll be using your own local database configured.
-     
+
 ## Future Ehancement
 Looking ahead, this web app has several key enhancements planned: incorporating Markdown support and a rich text editor for better content creation, implementing third-party login options and two-factor authentication, adding features like post liking, user following, and a notification system, developing an admin panel with moderation tools and msy be some analytics, optimizing performance with caching and efficient database queries, and enhancing SEO with meta tags and better URL structures. I'm always open to feedback and new ideas! If you have suggestions or would like to collaborate, please reach out.
+
 
 ## Acknowledgments
 
 * Corey Schafer's Flask Tutorial Series for providing the initial inspiration and learning resources.
 
 * The Flask and Python communities for their excellent documentation and support.
+
 
 ## Author
 ### **Emmanuel Niyonshuti**
@@ -239,3 +243,5 @@ Emmanuel is a passionate full-stack software engineering student with a keen int
 [Github](https://github.com/EmmanuelNiyonshuti)
 [LinkedIn](https://www.linkedin.com/in/niyonshuti-emmanuel-82877b285/)
 [Twitter](https://x.com/NIYONSH77028058)
+
+
