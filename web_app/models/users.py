@@ -1,3 +1,6 @@
+"""
+This module comprises User model and a user loader callback.
+"""
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app, url_for, request, redirect
 from web_app import db, login_manager, bcrypt

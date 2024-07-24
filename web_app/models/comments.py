@@ -1,3 +1,6 @@
+"""
+This module comprises Comment model.
+"""
 from datetime import datetime
 from web_app import db
 

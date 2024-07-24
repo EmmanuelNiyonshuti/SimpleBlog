@@ -1,3 +1,6 @@
+"""
+This module comprises Post model.
+"""
 from datetime import datetime
 from web_app import db
 

@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <div class="media">
-        <img class="rounded-circle account-img" src="{{ image_file }}">
-        <div class="media-body">
-            <h2 class="account-heading">{{ current_user.username }}</h2>
-            <p class="text-secondary">{{ current_user.email }}</p>
-        </div>
-        </div>
+        <div class="d-flex flex-column flex-lg-row align-items-center">
+            <img class="rounded-circle account-img mb-3 mb-sm-0 mr-sm-3" src="{{ image_file }}" alt="Profile picture">
+            <div class="text-center text-sm-left">
+                <h2  style="max-width: 50%;">{{ current_user.username }}</h2>
+                <p class="text-secondary text-break">{{ current_user.email }}</p>
+            </div>
+            </div>
         <!-- FORM HERE -->
             <form method="POST", action="", enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
